@@ -13,7 +13,7 @@ COPY style.css .
 COPY script.js .
 
 # Expose port 80
-EXPOSE 3000
+EXPOSE 80
 
 # No CMD needed — default Nginx entrypoint will serve static files
 
