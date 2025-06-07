@@ -53,33 +53,95 @@ A professional-grade Netflix clone built with HTML, CSS, and JavaScript, fully c
 ```groovy
 pipeline {
     agent any
+
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
     stages {
-        stage('Checkout') {
-            steps { git 'https://github.com/youruser/netflix-clone.git' }
-        }
-        stage('SonarQube Analysis') {
+        stage ("clean workspace") {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner'
+                cleanWs()
+            }
+        }
+        stage ("Git checkout") {
+            steps {
+                git branch: 'main', url: 'https://github.com/Aakash580/Netflix-Deployment-CI-CD.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
+                    -Dsonar.projectKey=Netflix '''
                 }
             }
         }
-        stage('OWASP Dependency Check') {
-            steps { sh './dependency-check.sh' }
+        stage("quality gate"){
+           steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token' 
+                }
+            } 
         }
-        stage('Trivy Scan') {
-            steps { sh 'trivy image youruser/netflix-clone:latest' }
-        }
-        stage('Docker Build & Push') {
+        stage ("Trivy File Scan") {
             steps {
-                sh 'docker build -t youruser/netflix-clone:latest .'
-                sh 'docker push youruser/netflix-clone:latest'
+                sh "trivy fs . > trivy.txt"
             }
         }
-        stage('Trigger ArgoCD') {
+        stage ("Build Docker Image") {
             steps {
-                sh 'curl -X POST https://argocd-api-url/applications/netflix-clone/sync'
+                sh "docker build -t netflix ."
             }
+        }
+        stage ("Tag & Push to DockerHub") {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'Docker') {
+                        sh "docker tag netflix aakashbendre580/netflix:latest"
+                        sh "docker push aakashbendre580/netflix:latest "
+                    }
+                }
+            }
+        }
+        stage('Docker Scout Image') {
+            steps {
+                script{
+                   withDockerRegistry(credentialsId: 'Docker', toolName: 'Docker'){
+                       sh 'docker-scout quickview aakashbendre580/netflix:latest'
+                       sh 'docker-scout cves aakashbendre580/netflix:latest'
+                       sh 'docker-scout recommendations aakashbendre580/netflix:latest'
+                   }
+                }
+            }
+        }
+        stage ("Deploy to Conatiner") {
+            steps {
+                sh 'docker run -d  -p 3000:3000 aakashbendre580/netflix:latest'
+            }
+        }
+    }
+    post {
+    always {
+        emailext attachLog: true,
+            subject: "'${currentBuild.result}'",
+            body: """
+                <html>
+                <body>
+                    <div style="background-color: #FFA07A; padding: 10px; margin-bottom: 10px;">
+                        <p style="color: white; font-weight: bold;">Project: ${env.JOB_NAME}</p>
+                    </div>
+                    <div style="background-color: #90EE90; padding: 10px; margin-bottom: 10px;">
+                        <p style="color: white; font-weight: bold;">Build Number: ${env.BUILD_NUMBER}</p>
+                    </div>
+                    <div style="background-color: #87CEEB; padding: 10px; margin-bottom: 10px;">
+                        <p style="color: white; font-weight: bold;">URL: ${env.BUILD_URL}</p>
+                    </div>
+                </body>
+                </html>
+            """,
+            to: 'provide_your_Email_id_here',
+            mimeType: 'text/html',
+            attachmentsPattern: 'trivy.txt'
         }
     }
 }
