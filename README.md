@@ -28,6 +28,10 @@ A professional-grade Netflix clone built with HTML, CSS, and JavaScript, fully c
 
 
 - 🐳 Docker containerization
+
+-![image](https://github.com/user-attachments/assets/fec27c2c-7bce-4838-b68e-61f500a6cd2d)
+ 
+
 - 🚀 GitOps-style deployment with **ArgoCD** to Kubernetes
 - 🧑‍🔧 Manual **debugging and linting fixes** applied for clean, secure code
 
@@ -79,5 +83,6 @@ pipeline {
         }
     }
 }
+```
 ![Screenshot 2025-06-07 210242](https://github.com/user-attachments/assets/c151d151-3029-4879-940d-498cfed60f9e)
 
