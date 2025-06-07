@@ -4,95 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Netflix Clone</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-    .header {
-      background: rgba(0,0,0,0.7);
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-size: 30px;
-      color: red;
-      font-weight: bold;
-    }
-    .signin-btn {
-      background-color: red;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .hero {
-      background: url('https://assets.nflxext.com/ffe/siteui/vlv3/7d03aa70-d3d5-4f00-b099-2126d9871100/973f6f74-5f3b-4b46-8dff-f3a88a361b57/US-en-20230612-popsignuptwoweeks-perspective_alpha_website_medium.jpg') center/cover no-repeat;
-      height: 90vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 20px;
-    }
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-    .hero h2 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-    .email-form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .email-form input {
-      padding: 10px;
-      font-size: 1rem;
-      width: 300px;
-      margin-bottom: 10px;
-    }
-    .email-form button {
-      background-color: red;
-      border: none;
-      padding: 10px 20px;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .footer {
-      padding: 20px;
-      text-align: center;
-      background-color: #111;
-      font-size: 0.9rem;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="header">
+  <header class="header">
     <div class="logo">NETFLIX</div>
     <button class="signin-btn">Sign In</button>
-  </div>
+  </header>
 
-  <div class="hero">
-    <h1>Unlimited movies, TV shows, and more</h1>
-    <h2>Watch anywhere. Cancel anytime.</h2>
-    <div class="email-form">
-      <input type="email" placeholder="Email address" />
-      <button>Get Started</button>
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1>Unlimited movies, TV shows, and more</h1>
+      <h2>Watch anywhere. Cancel anytime.</h2>
+      <p>Ready to watch? Enter your email to create or restart your membership.</p>
+      <form class="email-form" onsubmit="return validateEmail()">
+        <input type="email" id="email" placeholder="Email address" required />
+        <button type="submit">Get Started</button>
+      </form>
     </div>
-  </div>
+  </section>
 
-  <div class="footer">
-    This is a static Netflix UI clone. No functionality is implemented.
-  </div>
+  <footer class="footer">
+    <p>&copy; 2025 Netflix Clone. Built for educational purposes.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
