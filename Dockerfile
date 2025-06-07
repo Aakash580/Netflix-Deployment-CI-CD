@@ -1,23 +1,19 @@
-# Build stage
-FROM maven:3.9.5-eclipse-temurin-17 AS builder
+# Use official Nginx image
+FROM nginx:alpine
 
-WORKDIR /app
+# Set working directory inside the container
+WORKDIR /usr/share/nginx/html
 
-# Copy source code and build
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
+# Remove default Nginx index page
+RUN rm -rf ./*
 
-# Runtime stage
-FROM eclipse-temurin:17-jre
+# Copy static files into the container
+COPY index.html .
+COPY style.css .
+COPY script.js .
 
-WORKDIR /app
-
-# Copy built JAR file
-COPY --from=builder /app/target/*.jar app.jar
-
-# Expose the port your app uses
+# Expose port 80
 EXPOSE 3000
 
-# Run the app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# No CMD needed — default Nginx entrypoint will serve static files
+
