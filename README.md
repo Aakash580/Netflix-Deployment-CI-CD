@@ -37,7 +37,7 @@ A professional-grade Netflix clone built with HTML, CSS, and JavaScript, fully c
 
 ---
 
-## 🔁 CI/CD Pipeline (Jenkins)
+## 🔁 CI/CD Pipeline (Jenkins).
 
 ### Stages:
 1. **Checkout Code** from GitHub
