@@ -12,7 +12,7 @@ A professional-grade Netflix clone built with HTML, CSS, and JavaScript, fully c
 | Security     | OWASP Dependency-Check, Trivy, SonarQube      |
 | Container    | Docker                                        |
 | Debugging    | Bash, Shell logs, Static analysis             |
--------------------------------------------------------------------
+----------------------------------------------------------------
 
 
 ---
