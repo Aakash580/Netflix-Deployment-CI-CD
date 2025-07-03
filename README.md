@@ -45,6 +45,7 @@ A professional-grade Netflix clone built with HTML, CSS, and JavaScript, fully c
 3. **Security Scans** using:
    - OWASP Dependency Check
    - Trivy (for Docker image)
+   - Docker Scout 
 4. **Build Docker Image**
 5. **Push to Docker Hub**
 6. **K8s Deployment** via ArgoCD
